@@ -34,17 +34,17 @@ public class PalletController : MonoBehaviour
         }
         if (!gameover && transform.position.x >= 670)
         {
-            audio1.SetActive(false);
-            audio2.SetActive(true);
-            audio2.GetComponent<AudioSource>().Play();
             energyManager.gameover = true;
         }
         if (!gameover && transform.position.x >= 730)
         {
             gameover = true;
+            audio1.SetActive(false);
+            audio2.SetActive(true);
+            credits.SetActive(true);
             credits.GetComponent<Animator>().SetTrigger("showCredits");
         }
-        if (Input.GetKeyDown(KeyCode.Space)) SceneManager.LoadScene(0);
+        if (gameover && Input.GetKeyDown(KeyCode.Space)) SceneManager.LoadScene(0);
     }
 
     void FixedUpdate()
