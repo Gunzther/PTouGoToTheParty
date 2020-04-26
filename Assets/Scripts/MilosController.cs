@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MilosController : MonoBehaviour
 {
     public KeyCode crawl, handsUp;
-    public RectTransform canvas;
+    public Slider slider;
 
     Animator anim;
     Vector3 fingerPos;
@@ -13,7 +14,7 @@ public class MilosController : MonoBehaviour
     private void Awake()
     {
         anim = transform.GetComponent<Animator>();
-        // play bg music
+        slider.value = 5;
     }
     
     void Start()
@@ -24,35 +25,21 @@ public class MilosController : MonoBehaviour
     
     void Update()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            Vector2 pos = touch.position;
-
-            if (touch.phase == TouchPhase.Moved)
-            {
-                pos = touch.position;
-            }
-
-            pos.y = (pos.y - canvas.rect.height) / canvas.rect.height;
-            fingerPos = new Vector3(0.0f, pos.y, 0.0f);
-        }
-
-        if (Input.GetKeyDown(crawl) || fingerPos.y >= 0)
+        if (Input.GetKeyDown(crawl) || slider.value <= 3)
         {
             anim.SetBool("handsUp", false);
             anim.SetBool("crawl", true);
         }
-        if (Input.GetKeyUp(crawl) || Input.touchCount == 0)
+        if (Input.GetKeyUp(crawl) || (slider.value < 8 && slider.value > 3))
         {
             anim.SetBool("crawl", false);
         }
-        if (Input.GetKeyDown(handsUp) || fingerPos.y < 0)
+        if (Input.GetKeyDown(handsUp) || slider.value >= 8)
         {
             anim.SetBool("crawl", false);
             anim.SetBool("handsUp", true);
         }
-        if (Input.GetKeyUp(handsUp) || Input.touchCount == 0)
+        if (Input.GetKeyUp(handsUp) || (slider.value < 8 && slider.value > 3))
         {
             anim.SetBool("handsUp", false);
         }
